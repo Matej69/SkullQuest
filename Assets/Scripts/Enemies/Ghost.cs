@@ -17,6 +17,7 @@ public class Ghost : AEnemy {
     {
         timer_invisibleFor = new Timer(sec_beInvisibleFor);
         timer_invisibleEvery = new Timer(sec_beInvisibleEvery);
+        canBeRotated = false;
     }
 
 

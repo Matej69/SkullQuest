@@ -31,16 +31,40 @@ public class Joystick : MonoBehaviour {
 
     public Vector2 GetDir()
     {
-        if (IsFingerInsideJoystickCol())        
-            return (MultiplatformInput.GetInputPos() - joystickPos).normalized;        
+        Vector2 touchPos = Vector2.zero;
+        if (IsFingerInsideJoystickCol(ref touchPos))        
+            return (touchPos - joystickPos).normalized;        
         else
             return Vector2.zero;        
     }
 
-    public bool IsFingerInsideJoystickCol()
-    {        
-        Vector2 inputPos = MultiplatformInput.GetInputPos();
-        return ((boxCollider.bounds.Contains(inputPos)));
+    //must be like this for multiple touches
+    public bool IsFingerInsideJoystickCol(ref Vector2 _insideTouchpos)
+    {
+        if (MultiplatformInput.interactionType == MultiplatformInput.E_INTERACTION_TYPE.FINGER)
+        {
+            for (int i = 0; i < Input.touchCount; ++i)
+            {
+                Vector2 touchPos = Input.touches[i].position;
+                if (boxCollider.bounds.Contains(touchPos))
+                {
+                    _insideTouchpos = touchPos;
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            Vector2 mousePos = MultiplatformInput.GetInputPos();
+            if (boxCollider.bounds.Contains(mousePos))
+            {
+                _insideTouchpos = mousePos;
+                return true;
+            }
+            else
+                return false;
+        }
     }
 
 

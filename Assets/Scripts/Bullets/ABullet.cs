@@ -3,11 +3,13 @@ using System.Collections;
 
 
 abstract public class ABullet : MonoBehaviour {
-
+        
     private Timer timer_lifetime;
     public float lifeTime;
     private float alphaReduceSpeed = 6f;
     private bool isLifeEndEffectTriggered = false;
+    private bool canHit = true;    
+
     public enum E_BULLET_OWNER
     {
         PLAYER,
@@ -19,9 +21,10 @@ abstract public class ABullet : MonoBehaviour {
     public float speed;
     public E_BULLET_OWNER ownerID;
     public int damage;
+    public int hitCounter;
 
 
-
+    virtual public void OnStart() { }
     virtual public void OnLifeEndEffect() { }             //Spawn spiders, spawn toxic,.....
     virtual public void OnHitEnemy(GameObject _enemy)
     {
@@ -37,10 +40,11 @@ abstract public class ABullet : MonoBehaviour {
     void Start () 
 	{
         timer_lifetime = new Timer(lifeTime);
+        OnStart();
     }
 
 	void Update ()
-    {
+    {      
         HandleLifetime();
         HandleMovement();
     }
@@ -51,14 +55,21 @@ abstract public class ABullet : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D _col)
     {
-        if(ownerID == E_BULLET_OWNER.PLAYER && _col.gameObject.CompareTag("ENEMY"))
+        if (canHit)
         {
-            OnHitEnemy(_col.gameObject);            
+            if (ownerID == E_BULLET_OWNER.PLAYER && _col.gameObject.CompareTag("ENEMY"))
+            {
+                OnHitEnemy(_col.gameObject);
+                hitCounter--;
+            }
+            else if (ownerID == E_BULLET_OWNER.ENEMY && _col.gameObject.CompareTag("PLAYER"))
+            {
+                OnHitPlayer();
+                hitCounter--;
+            }
         }
-        else if(ownerID == E_BULLET_OWNER.ENEMY && _col.gameObject.CompareTag("PLAYER"))
-        {
-            OnHitPlayer();            
-        }
+
+        canHit = (hitCounter > 0) ? true : false;
         //Slash
         //Spider web
         //Cacuna
@@ -70,7 +81,7 @@ abstract public class ABullet : MonoBehaviour {
 
     //On lifetime end reduce opacity and destroy GO
     void HandleLifetime()
-    {        
+    {          
         timer_lifetime.Tick(Time.deltaTime);            
         if(timer_lifetime.IsFinished())
         {

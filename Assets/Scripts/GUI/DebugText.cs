@@ -15,7 +15,7 @@ public class DebugText : MonoBehaviour {
 
     static public void WriteText(string _str)
     {
-        refrence.GetComponent<Text>().text += _str;
+        refrence.GetComponent<Text>().text = _str;
     }
 
 

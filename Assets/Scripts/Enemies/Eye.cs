@@ -5,6 +5,11 @@ using System.Collections;
 public class Eye : AEnemy {
 
 
+    public override void OnStart()
+    {
+        canBeRotated = true;
+    }
+
 
 
     override public void HandleAttack()
@@ -13,11 +18,11 @@ public class Eye : AEnemy {
         if (timer_changeAttackDir.IsFinished())
         {
             attackDir = (player.transform.position - transform.position).normalized;
+            moveDir = attackDir;
             float rotationAngle = Global.GetAngle(Vector2.right, attackDir);
             transform.eulerAngles = new Vector3(0, 0, rotationAngle);
             timer_changeAttackDir.Reset();
         }
-
         
         //if player is reached inflict damage and reset attack timer
         if(IsTouchingPlayer())
@@ -30,11 +35,11 @@ public class Eye : AEnemy {
                 CharacterStateController.refrence.ReduceHealth(attackDamage);
                 timer_attack.Reset();
             }
-        }
+        }        
         
         //apply movement
-        if(!IsTouchingPlayer())
-            transform.Translate(attackDir * attackSpeed * Time.deltaTime, Space.World);        
+        //if(!IsTouchingPlayer())
+        transform.Translate(attackDir * attackSpeed * Time.deltaTime, Space.World);        
     }
 
     override public void HandleMovement()

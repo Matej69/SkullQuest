@@ -10,6 +10,7 @@ public class Cat : AEnemy {
        
     public override void OnStart()
     {
+        canBeRotated = false;
         timer_dashEvery = new Timer(sec_dashEvery);
         timer_dashEvery.currentTime = 0;
     }

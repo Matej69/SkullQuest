@@ -4,6 +4,12 @@ using System.Collections;
 
 public class Bat : AEnemy {
 
+    public override void OnStart()
+    {
+        canBeRotated = false;
+        attackSpeed = Random.Range(attackSpeed - 0.5f, attackSpeed + 0.5f);
+    }
+    
 
     override public void HandleAttack()
     {

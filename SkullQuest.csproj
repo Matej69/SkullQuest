@@ -66,17 +66,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Bat.cs" />
-    <Compile Include="Assets\Cat.cs" />
-    <Compile Include="Assets\Ghost.cs" />
-    <Compile Include="Assets\HealthBarGUI.cs" />
-    <Compile Include="Assets\ScreenSettings.cs" />
     <Compile Include="Assets\Scripts\Bullets\ABullet.cs" />
+    <Compile Include="Assets\Scripts\Bullets\Explosion.cs" />
     <Compile Include="Assets\Scripts\Bullets\Slash.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Coin\Coin.cs" />
+    <Compile Include="Assets\Scripts\Coin\CoinFactory.cs" />
     <Compile Include="Assets\Scripts\Enemies\AEnemy.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Bat.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Cat.cs" />
     <Compile Include="Assets\Scripts\Enemies\Eye.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Ghost.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Pumpkin.cs" />
+    <Compile Include="Assets\Scripts\EnemyArea.cs" />
+    <Compile Include="Assets\Scripts\EnemyFactory.cs" />
+    <Compile Include="Assets\Scripts\GUI\CoinsGUI.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugText.cs" />
+    <Compile Include="Assets\Scripts\GUI\HealthBarGUI.cs" />
     <Compile Include="Assets\Scripts\GUI\Joystick.cs" />
     <Compile Include="Assets\Scripts\GUI\PlayButton.cs" />
     <Compile Include="Assets\Scripts\GUI\WeaponGUI.cs" />
@@ -86,6 +92,7 @@
     <Compile Include="Assets\Scripts\Player\CharacterActionController.cs" />
     <Compile Include="Assets\Scripts\Player\CharacterMovementController.cs" />
     <Compile Include="Assets\Scripts\Player\CharacterStateController.cs" />
+    <Compile Include="Assets\Scripts\ScreenSettings.cs" />
     <Compile Include="Assets\Scripts\Timer\Timer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

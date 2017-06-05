@@ -4,11 +4,21 @@ using System.Collections;
 
 public class AEnemy : MonoBehaviour {
 
+    public enum E_ID { BAT, CAT, EYE, GHOST, PUMPKIN, SPIDER, SPIKE }
+
+    public bool canBeRotated = false;
+
+    public int maxHealth;
+    [HideInInspector]
     public int health;
     [HideInInspector]
     public bool isDying = false;
-   
-    protected Vector2 moveDir;
+
+    bool coinsSpawned = false;
+    
+
+    [HideInInspector]
+    public Vector2 moveDir;
     [Header("MOVEMENT")]
     public float moveSpeed;
     
@@ -29,8 +39,7 @@ public class AEnemy : MonoBehaviour {
     private float alphaReduceSpeed = 0.15f;
     private BoxCollider2D boxCollider;
     protected GameObject player;
-
-
+    
     //Timers
     protected Timer timer_changeMoveDir;
     protected Timer timer_changeAttackDir;
@@ -39,8 +48,7 @@ public class AEnemy : MonoBehaviour {
     public float sec_changeMoveDir;
     public float sec_changeAttackDir;
     public float sec_attack;
-
-
+    
     
 
 
@@ -58,9 +66,11 @@ public class AEnemy : MonoBehaviour {
         player = CharacterStateController.refrence.gameObject;
 
         timer_changeMoveDir = new Timer(sec_changeMoveDir);
+        timer_changeMoveDir.currentTime = 0;    //moveDir is given on isFinish so this will give direction from start
         timer_changeAttackDir = new Timer(sec_changeAttackDir);
         timer_attack = new Timer(sec_attack);
-
+        
+        health = maxHealth;
         OnStart();
     }
 
@@ -81,9 +91,17 @@ public class AEnemy : MonoBehaviour {
         {
             //change animation
             GetComponent<Animator>().SetBool("isDying", isDying);
+            //spawn coins
+            if(!coinsSpawned)
+            {
+                int coinMultiplier = CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.COINS).lvl;
+                CoinFactory.SpawnCoins(transform.position, (maxHealth + attackDamage) * coinMultiplier);
+                coinsSpawned = true;
+            }
             //reduce opacity
-            if (ReduceOpacity() <= 0)
+            if (ReduceOpacity() <= 0)            
                 Destroy(gameObject);
+            
         }
     }
     private float ReduceOpacity()
@@ -167,7 +185,7 @@ public class AEnemy : MonoBehaviour {
         timer_attack.Tick(Time.deltaTime);
         timer_changeAttackDir.Tick(Time.deltaTime);
     }
-
+        
 
 
 
