@@ -26,10 +26,12 @@ public class Ghost : AEnemy {
         //follow player
         Vector2 playerDir = (player.transform.position - transform.position).normalized;
         transform.Translate(playerDir * attackSpeed * Time.deltaTime, Space.World);
-        //rotate
-        int scaleX = ((playerDir * attackSpeed).x >= 0) ? 1 : -1;
-        transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
-        
+        //rotate only if not to close to player(to avoid x,-x,x,-x,x,-x every frame)
+        if (Vector2.Distance(transform.position, player.transform.position) > 0.05f)
+        {
+            int scaleX = ((playerDir * attackSpeed).x > 0) ? 1 : -1;
+            transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
+        }
 
         //apply visibility
         targetAlpha = 1;

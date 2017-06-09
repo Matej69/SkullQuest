@@ -36,7 +36,7 @@ public class AEnemy : MonoBehaviour {
     [HideInInspector]
     public E_ACTIVITY activity;
 
-    private float alphaReduceSpeed = 0.15f;
+    private float deathReduceSpeed = 0.15f;
     private BoxCollider2D boxCollider;
     protected GameObject player;
     
@@ -99,18 +99,20 @@ public class AEnemy : MonoBehaviour {
                 coinsSpawned = true;
             }
             //reduce opacity
-            if (ReduceOpacity() <= 0)            
+            if (ChangeOpacity(deathReduceSpeed) <= 0)            
                 Destroy(gameObject);
             
         }
     }
-    private float ReduceOpacity()
+    public float ChangeOpacity(float _speed)
     {
         //If there are no children sprites(GameObjects)
+        Color col;
         if (gameObject.transform.childCount == 0)
         {
-            Color col = GetComponent<SpriteRenderer>().color;
-            col.a -= alphaReduceSpeed * Time.deltaTime;
+            col = GetComponent<SpriteRenderer>().color;
+            col.a -= _speed * Time.deltaTime;
+            col.a = (col.a < 0f) ? 0f : ((col.a > 1f) ? 1f : col.a);
             GetComponent<SpriteRenderer>().color = col;
             return col.a;
         }
@@ -118,8 +120,8 @@ public class AEnemy : MonoBehaviour {
         else if (gameObject.transform.childCount > 0)
         {
             //Reduce opacity of parent object
-            Color col = GetComponent<SpriteRenderer>().color;
-            col.a -= alphaReduceSpeed * Time.deltaTime;
+            col = GetComponent<SpriteRenderer>().color;
+            col.a -= _speed * Time.deltaTime;
             GetComponent<SpriteRenderer>().color = col;
             //reduce opacity for children
             int counter = 0;
@@ -127,13 +129,16 @@ public class AEnemy : MonoBehaviour {
             {
                 GameObject go = childTran.gameObject;
                 col = go.GetComponent<SpriteRenderer>().color;
-                col.a -= alphaReduceSpeed * Time.deltaTime;
+                col.a -= _speed * Time.deltaTime;
+                col.a = (col.a < 0f) ? 0f : ((col.a > 1f) ? 1f : col.a);
                 go.GetComponent<SpriteRenderer>().color = col;
 
                 //if on last child return new opacity
                 counter++;
-                if(counter == gameObject.transform.childCount)
+                if (counter == gameObject.transform.childCount)
+                {                    
                     return col.a;
+                }
             }
         }
         Debug.LogError("ReduceOpacity() is not executed properly");
