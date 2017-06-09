@@ -28,12 +28,12 @@ abstract public class ABullet : MonoBehaviour {
     virtual public void OnLifeEndEffect() { }             //Spawn spiders, spawn toxic,.....
     virtual public void OnHitEnemy(GameObject _enemy)
     {
-        _enemy.GetComponent<AEnemy>().health -= damage;        
+        _enemy.GetComponent<AEnemy>().ReduceHealth(damage);        
     }
     virtual public void OnHitPlayer()
     {
         CharacterStateController.refrence.ReduceHealth(damage);
-    }           
+    }
 
 
 

@@ -7,9 +7,11 @@ public class CharacterStateController : MonoBehaviour {
 
     public static CharacterStateController refrence;
 
+
+
     public class UpgradeStat
     {
-        public enum E_ID {MAX_HEALTH, ATTACK_DMG, HEALTH_RENGEN, CRIT_CHANCE, EVADE_CHANCE, COINS}    
+        public enum E_ID {MAX_HEALTH, ATTACK_DMG, HEALTH_REGEN, CRIT_CHANCE, EVADE_CHANCE, COINS}    
         public int lvl;
         public int maxLvl;
 
@@ -26,19 +28,27 @@ public class CharacterStateController : MonoBehaviour {
 
         public UpgradeStat(int[] _upgradeValues, int[] _costValues) { lvl = 1; maxLvl = 7; upgradeValues = _upgradeValues; costValues = _costValues; }   
         public bool CanBeUpgraded() { return (lvl < maxLvl); }
-        public void Upgrade() { lvl++;}
+        public void Upgrade() { lvl = (lvl < maxLvl) ? lvl+1 : lvl;}
     }
     public Dictionary<UpgradeStat.E_ID, UpgradeStat> stats = new Dictionary<UpgradeStat.E_ID, UpgradeStat>();
 
+
+
     [HideInInspector]
     public int health;
-    
+    [HideInInspector]
+    public int coins;
+
+    Timer timer_healthRegen;
 
 	void Awake()
 	{
         refrence = this;
+
+        timer_healthRegen = new Timer(1f);
         InitStatsDictionary();
         health = 20;
+        coins = 10000000;
     }
 	
 	void Start () 
@@ -47,12 +57,18 @@ public class CharacterStateController : MonoBehaviour {
 
 	void Update () 
 	{
+        HandleHealthRegen();
     }
 
 
     public void ReduceHealth(int _amount)
     {
         health -= (health - _amount < 0) ? health : _amount;
+    }
+    private void IncreaseHealth(int _amount)
+    {
+        int maxHealth = GetStats(UpgradeStat.E_ID.MAX_HEALTH).value;
+        health += (health + _amount < maxHealth) ? _amount : 0;
     }
 
 
@@ -62,7 +78,7 @@ public class CharacterStateController : MonoBehaviour {
         int[] cost = new int[] {0, 0, 300, 700, 1500, 2800, 4500, 7000};
         stats[UpgradeStat.E_ID.MAX_HEALTH] =        new UpgradeStat(new int[] { 0,  20, 35, 55, 85, 120,160,210 },  cost    );
         stats[UpgradeStat.E_ID.ATTACK_DMG] =        new UpgradeStat(new int[] { 0,  1,  2,  3,  5,  9,  15, 28  },  cost    );
-        stats[UpgradeStat.E_ID.HEALTH_RENGEN] =     new UpgradeStat(new int[] { 0,  1,  2,  3,  4,  6,  9,  13  },  cost    );
+        stats[UpgradeStat.E_ID.HEALTH_REGEN] =      new UpgradeStat(new int[] { 0,  1,  2,  3,  4,  6,  9,  13  },  cost    );
         stats[UpgradeStat.E_ID.CRIT_CHANCE] =       new UpgradeStat(new int[] { 0,  1,  2,  3,  4,  5,  6,  7   },  cost    );
         stats[UpgradeStat.E_ID.EVADE_CHANCE] =      new UpgradeStat(new int[] { 0,  1,  2,  4,  7,  11, 16, 20  },  cost    );
         stats[UpgradeStat.E_ID.COINS] =             new UpgradeStat(new int[] { 0,  1,  2,  3,  4,  5,  7,  10  },  cost    );
@@ -70,6 +86,16 @@ public class CharacterStateController : MonoBehaviour {
     public UpgradeStat GetStats(UpgradeStat.E_ID _id)
     {
         return stats[_id];
+    }
+
+    public void HandleHealthRegen()
+    {
+        timer_healthRegen.Tick(Time.deltaTime);
+        if (timer_healthRegen.IsFinished())
+        {
+            IncreaseHealth(GetStats(UpgradeStat.E_ID.HEALTH_REGEN).value);
+            timer_healthRegen.Reset();
+        }
     }
 
 

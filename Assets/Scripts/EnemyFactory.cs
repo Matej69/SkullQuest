@@ -7,6 +7,8 @@ public class EnemyFactory : MonoBehaviour {
 
     static private EnemyFactory refrence;
 
+    public GameObject pref_healthBar;
+
     [System.Serializable]
     public class EnemyInfo
     {
@@ -34,7 +36,12 @@ public class EnemyFactory : MonoBehaviour {
 
         return null;
     }
-	
+
+    static public GameObject CreateHealthBar(Vector2 _pos)
+    {
+        return (GameObject)Instantiate(refrence.pref_healthBar, _pos, Quaternion.identity);
+    }
+
 
 
 

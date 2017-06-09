@@ -10,7 +10,7 @@ public class CoinsGUI : MonoBehaviour {
 
 	void Update () 
 	{
-        int coins = CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.COINS).value;
+        int coins = CharacterStateController.refrence.coins;
         text.text = GetSeparatedNumber(coins);
 	}
 

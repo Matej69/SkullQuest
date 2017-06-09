@@ -11,18 +11,25 @@ public class ShopGUI : MonoBehaviour {
 
     public GameObject content;
 
+    public float visibilityRadius = 5f;
+    public GameObject shopKeeper;
+
+    GameObject player;
+
 	void Awake()
 	{
         refrence = this;
     }
 	
 	void Start () 
-	{	
-	}
+	{
+        player = CharacterStateController.refrence.gameObject;
+    }
 
 	void Update () 
-	{	
-	}
+	{
+        HandleShopVisibility();
+    }
 
 
 
@@ -32,6 +39,14 @@ public class ShopGUI : MonoBehaviour {
             refrence.content.SetActive(true);
         else
             refrence.content.SetActive(false);
+    }
+
+    void HandleShopVisibility()
+    {
+        if (Vector2.Distance(player.transform.position, shopKeeper.transform.position) < visibilityRadius)
+            SetVisibility(true);
+        else
+            SetVisibility(false);        
     }
 
 

@@ -38,6 +38,7 @@ public class CharacterActionController : MonoBehaviour {
         float rotationAngle = Global.GetAngle(Vector2.right, lastNotZeroDir);
 
         GameObject slash = (GameObject)Instantiate(pref_slash, slashSpawnPoint, Quaternion.identity);
+        slash.GetComponent<ABullet>().damage = CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.ATTACK_DMG).value;
         slash.GetComponent<ABullet>().direction = lastNotZeroDir;
         slash.GetComponent<ABullet>().transform.eulerAngles = new Vector3(0, 0, rotationAngle);
 

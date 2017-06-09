@@ -31,7 +31,7 @@ public class Coin : MonoBehaviour {
     {
         if(_col.CompareTag("PLAYER") && timer_startInvincibility.IsFinished())
         {            
-            CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.COINS).value += value;
+            CharacterStateController.refrence.coins += value;
             Destroy(gameObject);
         }
     }

@@ -104,7 +104,6 @@ public class EnemyArea : MonoBehaviour {
         //Disable area if all enemies are inside spawn range and if they're not visible by player
         if (allEnemiesOutsidePlayerVision && Vector2.Distance(transform.position, player.transform.position) > spawnPlusExtraRadius)
         {
-            Debug.Log("reducing");
             isAreaActive = false;
             if(ChangeAreaOpacity(4f) <= 0)
                 MapLoader.refrence.DisableEnemyArea(gameObject);
