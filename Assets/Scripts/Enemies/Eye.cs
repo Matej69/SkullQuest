@@ -32,7 +32,7 @@ public class Eye : AEnemy {
             //deal damage
             if (timer_attack.IsFinished())
             {
-                CharacterStateController.refrence.ReduceHealth(attackDamage);
+                CharacterStateController.refrence.TryReduceHealthOnDamage(attackDamage);
                 timer_attack.Reset();
             }
         }        

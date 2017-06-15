@@ -13,12 +13,15 @@ public class MapLoader : MonoBehaviour {
     [Header("ENEMIES")]
     public List<GameObject> enemyAreas;
     public float enemyAppearRadius = 10;
+    [HideInInspector]
+    public Bounds mapBounds;
 
     private GameObject player;
 
 	void Awake()
 	{
         refrence = this;
+        CalculateMapBounds();
     }
 	
 	void Start () 
@@ -81,6 +84,42 @@ public class MapLoader : MonoBehaviour {
                 }
             }
         }
+    }
+
+
+
+    void CalculateMapBounds()
+    {
+        List<GameObject> grass = MapLoader.refrence.grassChunks;
+        for (int i = 0; i < grass.Count; ++i)
+        {
+            Vector2 grassPos = grass[i].transform.position;
+            //set initial values
+            if (i == 0)
+            {
+                mapBounds.min = new Vector2(grassPos.x, grassPos.y);
+                mapBounds.max = new Vector2(grassPos.x, grassPos.y);
+            }
+
+            //set new map bound values for min values
+            if (grassPos.x < mapBounds.min.x)
+                mapBounds.min = new Vector2(grassPos.x, mapBounds.min.y);
+            if (grassPos.y < mapBounds.min.y)
+                mapBounds.min = new Vector2(mapBounds.min.x, grassPos.y);
+            //set new map bound values for max values
+            if (grassPos.x > mapBounds.max.x)
+                mapBounds.max = new Vector2(grassPos.x, mapBounds.max.y);
+            if (grassPos.y > mapBounds.max.y)
+                mapBounds.max = new Vector2(mapBounds.max.x, grassPos.y);
+        }
+    }
+
+    public bool IsInsideMapBounds(GameObject _go)
+    {
+        Vector2 pos = _go.transform.position;
+        if (pos.x > mapBounds.min.x && pos.x < mapBounds.max.x && pos.y > mapBounds.min.y && pos.y < mapBounds.max.y)
+            return true;
+        return false;         
     }
 
 

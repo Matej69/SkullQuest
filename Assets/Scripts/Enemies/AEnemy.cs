@@ -7,8 +7,9 @@ public class AEnemy : MonoBehaviour {
     public enum E_ID { BAT, CAT, EYE, GHOST, PUMPKIN, SPIDER, SPIKE }
 
     public bool canBeRotated = false;
-
+    public bool canGiveCoins;
     public int maxHealth;
+    
     [HideInInspector]
     public int health;
     [HideInInspector]
@@ -16,7 +17,10 @@ public class AEnemy : MonoBehaviour {
 
     bool coinsSpawned = false;
 
-    private GameObject healthBar;
+    bool onDeathTriggered = false;
+
+
+    protected GameObject healthBar;
     private GameObject frontBar;
 
     [HideInInspector]
@@ -93,10 +97,13 @@ public class AEnemy : MonoBehaviour {
         //trigger death animation
         if (isDying)
         {
+            //trigger once on death
+            if (!onDeathTriggered)
+                OnDeath();
             //change animation
             GetComponent<Animator>().SetBool("isDying", isDying);
             //spawn coins
-            if (!coinsSpawned)
+            if (!coinsSpawned && canGiveCoins)
             {
                 int coinMultiplier = CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.COINS).lvl;
                 CoinFactory.SpawnCoins(transform.position, (maxHealth + attackDamage) * coinMultiplier);
@@ -105,7 +112,6 @@ public class AEnemy : MonoBehaviour {
             //reduce opacity
             if (ChangeOpacity(deathReduceSpeed) <= 0)
                 Destroy(gameObject);
-
         }
     }
     public float ChangeOpacity(float _speed)
@@ -149,6 +155,12 @@ public class AEnemy : MonoBehaviour {
         return 777;
     }
 
+
+    void OnDeath()
+    {
+        AudioManager.CreateSound(AudioManager.E_SOUND.KILL);
+        onDeathTriggered = true;
+    }
 
 
     private void HandleActivityBehaviour()
@@ -221,6 +233,7 @@ public class AEnemy : MonoBehaviour {
     {
         health = (health - _amount < 0) ? 0 : health - _amount;
     }
+
 
 
 

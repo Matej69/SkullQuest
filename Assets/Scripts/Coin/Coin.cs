@@ -17,7 +17,7 @@ public class Coin : MonoBehaviour {
     void Start()
     {
         timer_startInvincibility = new Timer(0.55f);
-        timer_lifetime = new Timer(16f);
+        timer_lifetime = new Timer(7f);
     }
 
     void Update()

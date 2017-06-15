@@ -20,7 +20,7 @@ public class Bat : AEnemy {
         //apply damage
         if (timer_attack.IsFinished() && IsTouchingPlayer())
         {
-            CharacterStateController.refrence.ReduceHealth(attackDamage);
+            CharacterStateController.refrence.TryReduceHealthOnDamage(attackDamage);
             timer_attack.Reset();
         }
     }

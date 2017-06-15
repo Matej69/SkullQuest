@@ -28,11 +28,15 @@ abstract public class ABullet : MonoBehaviour {
     virtual public void OnLifeEndEffect() { }             //Spawn spiders, spawn toxic,.....
     virtual public void OnHitEnemy(GameObject _enemy)
     {
-        _enemy.GetComponent<AEnemy>().ReduceHealth(damage);        
+        int critChance = CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.CRIT_CHANCE).value;
+        int finalDamage = (Random.Range(0, 100) < critChance) ? (damage * 4) : damage;
+        _enemy.GetComponent<AEnemy>().ReduceHealth(finalDamage);        
     }
     virtual public void OnHitPlayer()
     {
-        CharacterStateController.refrence.ReduceHealth(damage);
+        int evadeChance = CharacterStateController.refrence.GetStats(CharacterStateController.UpgradeStat.E_ID.EVADE_CHANCE).value;
+        if (Random.Range(0, 100) > evadeChance)
+            CharacterStateController.refrence.ReduceHealth(damage);
     }
 
 
@@ -68,12 +72,7 @@ abstract public class ABullet : MonoBehaviour {
                 hitCounter--;
             }
         }
-
         canHit = (hitCounter > 0) ? true : false;
-        //Slash
-        //Spider web
-        //Cacuna
-        //Spikes
     }
     
 
