@@ -32,6 +32,7 @@ public class Coin : MonoBehaviour {
         if(_col.CompareTag("PLAYER") && timer_startInvincibility.IsFinished())
         {            
             CharacterStateController.refrence.coins += value;
+            AudioManager.CreateSound(AudioManager.E_SOUND.COIN);
             Destroy(gameObject);
         }
     }

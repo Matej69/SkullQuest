@@ -61,6 +61,12 @@ public class AEnemy : MonoBehaviour {
     virtual public void HandleAttack() { }
     virtual public void HandleMovement() { }
     virtual public void OnStart() { }
+    virtual public void OnDeath()
+    {
+        AudioManager.CreateSound(AudioManager.E_SOUND.KILL);
+        onDeathTriggered = true;
+    }
+
 
     void Awake()
     {
@@ -155,13 +161,7 @@ public class AEnemy : MonoBehaviour {
         return 777;
     }
 
-
-    void OnDeath()
-    {
-        AudioManager.CreateSound(AudioManager.E_SOUND.KILL);
-        onDeathTriggered = true;
-    }
-
+       
 
     private void HandleActivityBehaviour()
     {

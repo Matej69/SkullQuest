@@ -66,8 +66,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AudioGUI.cs" />
     <Compile Include="Assets\AudioManager.cs" />
     <Compile Include="Assets\FreeAudio.cs" />
+    <Compile Include="Assets\GameScenes.cs" />
     <Compile Include="Assets\MapLoader.cs" />
     <Compile Include="Assets\Scripts\Bullets\ABullet.cs" />
     <Compile Include="Assets\Scripts\Bullets\Explosion.cs" />

@@ -22,7 +22,8 @@ public class CameraController : MonoBehaviour {
 
 	void Update () 
 	{
-        HandlePlayerFollow();
+        if(GameManager.refrence.gameObject.active)
+            HandlePlayerFollow();
     }
 
 

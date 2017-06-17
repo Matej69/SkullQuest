@@ -6,7 +6,13 @@ public class SpikeBall : AEnemy {
 
     [Header("Spider specific")]
     public GameObject pref_spike;
-    
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        GameManager.refrence.IncreaseDeadBossessCount();        
+    }
+
 
     override public void HandleAttack()
     {

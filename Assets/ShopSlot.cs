@@ -56,10 +56,13 @@ public class ShopSlot : MonoBehaviour {
             int curCoins = CharacterStateController.refrence.coins;
             if (curCoins >= statInfo.cost && statInfo.CanBeUpgraded())
             {
+                AudioManager.CreateSound(AudioManager.E_SOUND.PURCHASE);
                 statInfo.Upgrade();
                 CharacterStateController.refrence.coins -= statInfo.cost;
                 UpdateInfo();
             }
+            else
+                AudioManager.CreateSound(AudioManager.E_SOUND.PURCHASE_FAILED);
         });
     }
 

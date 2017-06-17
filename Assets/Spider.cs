@@ -10,6 +10,13 @@ public class Spider : AEnemy {
     public float spawnSpiderEvery;
 
     Timer timer_spawnSpider;
+    
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        GameManager.refrence.IncreaseDeadBossessCount();
+    }
 
     public override void OnStart()
     {
